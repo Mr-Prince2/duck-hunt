@@ -38,13 +38,25 @@ export default function App() {
     return (
         <div className={`duck-hunt-app ${screenShake ? 'screen-shake' : ''}`}>
             {/* Vintage CRT Scanline & Phosphor Overlay */}
-            <CRTOverlay enabled={crtEnabled} onToggle={toggleCrt} />
+            <CRTOverlay enabled={crtEnabled} />
 
             {/* White flash on shot */}
             <FlashOverlay isFlashing={flash} />
 
             {/* Top Bar Controls */}
             <header className="top-controls-bar">
+                <button
+                    type="button"
+                    className={`retro-crt-btn ${crtEnabled ? 'active' : ''}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCrt();
+                    }}
+                    title="Toggle Vintage CRT Arcade Monitor Filter"
+                    aria-label="Toggle CRT Filter"
+                >
+                    {crtEnabled ? '📺 CRT: ON' : '📺 CRT: OFF'}
+                </button>
                 <AudioControl isMuted={isMuted} onToggleMute={toggleMute} />
             </header>
 

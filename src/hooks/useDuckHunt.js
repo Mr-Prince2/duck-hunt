@@ -307,6 +307,7 @@ export function useDuckHunt() {
 
     // Start round
     const startRound = useCallback((roundNum = roundRef.current) => {
+        setGameState('ROUND_INTRO');
         setRoundDuckIndex(0);
         setRoundHits(0);
         setRoundHitTracker(Array(DUCKS_PER_ROUND).fill(null));
@@ -316,12 +317,18 @@ export function useDuckHunt() {
         });
     }, [showBanner, startWave]);
 
-    // Start Game from Start Screen
+    // Start Game from Start Screen (Pulls trigger: gunshot sound, screen flash, recoil kick)
     const startGame = useCallback(() => {
+        if (gameStateRef.current !== 'START_SCREEN') return;
+
+        triggerLightgunFlash();
+        triggerScreenShake();
+        audioMgr.play('shot');
+
         setScore(0);
         setRound(1);
         startRound(1);
-    }, [startRound]);
+    }, [startRound, triggerLightgunFlash, triggerScreenShake]);
 
     // Shoot duck (with retro screen shake, muzzle blast, score popup, and feathers)
     const shootDuck = useCallback((duckId, clickX, clickY) => {
