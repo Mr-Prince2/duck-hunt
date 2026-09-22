@@ -64,7 +64,8 @@ html, body, #root {
 }
 
 .retro-audio-btn,
-.retro-crt-btn {
+.retro-crt-btn,
+.retro-fs-btn {
     background: #000;
     border: 2px solid #00ff00;
     color: #00ff00;
@@ -75,6 +76,7 @@ html, body, #root {
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.35);
     transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    touch-action: manipulation;
 }
 
 .retro-crt-btn {
@@ -89,13 +91,27 @@ html, body, #root {
     box-shadow: 0 0 16px rgba(255, 153, 0, 0.8);
 }
 
+.retro-fs-btn {
+    border-color: #00ffff;
+    color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.35);
+}
+
+.retro-fs-btn.active {
+    background: #00ffff;
+    color: #000;
+    box-shadow: 0 0 16px rgba(0, 255, 255, 0.8);
+}
+
 .retro-audio-btn:hover,
-.retro-crt-btn:hover {
+.retro-crt-btn:hover,
+.retro-fs-btn:hover {
     transform: scale(1.05);
 }
 
 .retro-audio-btn:active,
-.retro-crt-btn:active {
+.retro-crt-btn:active,
+.retro-fs-btn:active {
     transform: scale(0.95);
 }
 
@@ -469,15 +485,27 @@ html, body, #root {
     height: calc(100vh - 90px);
     overflow: hidden;
     cursor: url("/target.png") 16 16, crosshair;
+    touch-action: none;
 }
 
 .duck-sprite {
     position: absolute;
     cursor: url("/target.png") 16 16, crosshair;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
     transform-origin: center center;
     transition: transform 0.05s linear;
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+@media (pointer: coarse) {
+    .duck-sprite::after {
+        content: '';
+        position: absolute;
+        inset: -14px;
+        background: transparent;
+    }
 }
 
 .duck-sprite.shot {
@@ -512,6 +540,16 @@ html, body, #root {
     pointer-events: none;
     animation: dogRiseEnhanced 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+}
+
+.dog-sprite.single-duck {
+    width: 172px;
+    height: 152px;
+}
+
+.dog-sprite.double-duck {
+    width: 224px;
+    height: 152px;
 }
 
 @keyframes dogRiseEnhanced {
@@ -639,8 +677,126 @@ html, body, #root {
     text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
+/* =========================================
+   RESPONSIVE LAYOUT & MOBILE LANDSCAPE
+   ========================================= */
+
+/* Mobile & Tablet Landscape Optimization */
+@media (max-height: 520px) {
+    #game-board {
+        height: calc(100vh - 60px);
+    }
+
+    #hud {
+        height: 54px;
+        padding: 3px 12px;
+        bottom: max(4px, env(safe-area-inset-bottom));
+        border-width: 2px;
+        width: calc(100% - 16px - env(safe-area-inset-left) - env(safe-area-inset-right));
+    }
+
+    .hud-label {
+        font-size: 10px;
+        margin-bottom: 2px;
+        letter-spacing: 0.5px;
+    }
+
+    .hud-digital-counter {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .bullet {
+        width: 8px;
+        height: 15px;
+    }
+
+    #bullets-container {
+        gap: 4px;
+    }
+
+    .duck-indicator {
+        width: 10px;
+        height: 10px;
+    }
+
+    #duck-indicators {
+        gap: 3px;
+    }
+
+    .dog-sprite {
+        bottom: 58px;
+    }
+
+    .dog-sprite.single-duck {
+        width: 120px;
+        height: 106px;
+    }
+
+    .dog-sprite.double-duck {
+        width: 156px;
+        height: 106px;
+    }
+
+    .top-controls-bar {
+        top: max(6px, env(safe-area-inset-top));
+        right: max(8px, env(safe-area-inset-right));
+        gap: 6px;
+    }
+
+    .retro-audio-btn,
+    .retro-crt-btn,
+    .retro-fs-btn {
+        font-size: 10px;
+        padding: 4px 8px;
+        border-width: 1.5px;
+    }
+
+    .start-box,
+    .pause-box {
+        padding: 16px 28px;
+        max-height: 94vh;
+    }
+
+    .start-box .title {
+        font-size: 26px;
+        margin-bottom: 4px;
+    }
+
+    .start-box .subtitle {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .start-prompt {
+        font-size: 14px;
+        padding: 8px 18px;
+        margin-bottom: 8px;
+    }
+
+    .top-score-display {
+        font-size: 12px;
+    }
+
+    .pause-title {
+        font-size: 26px;
+        margin-bottom: 8px;
+    }
+
+    .pause-subtitle {
+        font-size: 13px;
+    }
+
+    .banner {
+        top: 28%;
+        font-size: 24px;
+        padding: 10px 24px;
+        border-width: 2px;
+    }
+}
+
+/* Narrow devices */
+@media (max-width: 600px) and (min-height: 521px) {
     .start-box .title {
         font-size: 32px;
     }
@@ -670,13 +826,130 @@ html, body, #root {
         height: 11px;
     }
     .top-controls-bar {
-        top: 10px;
-        right: 10px;
+        top: max(8px, env(safe-area-inset-top));
+        right: max(8px, env(safe-area-inset-right));
         gap: 6px;
     }
     .retro-audio-btn,
-    .retro-crt-btn {
+    .retro-crt-btn,
+    .retro-fs-btn {
         font-size: 11px;
         padding: 5px 8px;
     }
+}
+
+/* =========================================
+   ROTATE PROMPT OVERLAY (MOBILE PORTRAIT)
+   ========================================= */
+.rotate-prompt-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: overlayFadeIn 0.3s ease-out;
+}
+
+.rotate-box {
+    background: #000;
+    border: 3px solid #00ff00;
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.2);
+    border-radius: 8px;
+    padding: 30px 24px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.rotate-device-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.phone-icon {
+    animation: rotatePhone 2.2s infinite ease-in-out;
+}
+
+@keyframes rotatePhone {
+    0%, 20% { transform: rotate(0deg); }
+    50%, 70% { transform: rotate(90deg); }
+    90%, 100% { transform: rotate(0deg); }
+}
+
+.arrow-icon {
+    color: #ffcc00;
+    font-size: 24px;
+    animation: arrowPulse 1.2s infinite alternate;
+}
+
+@keyframes arrowPulse {
+    0% { transform: translateX(-4px); opacity: 0.6; }
+    100% { transform: translateX(4px); opacity: 1; }
+}
+
+.rotate-title {
+    font-size: 22px;
+    color: #ff3333;
+    text-shadow: 2px 2px 0px #ffff00, 0 0 10px rgba(255, 51, 51, 0.6);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.rotate-desc {
+    font-size: 13px;
+    color: #e0e0e0;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.rotate-desc strong {
+    color: #00ff00;
+}
+
+.rotate-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rotate-btn-primary {
+    background: #ffcc00;
+    color: #000;
+    border: 2px solid #fff;
+    font-family: 'gameFont', monospace, sans-serif;
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+    transition: transform 0.1s ease;
+}
+
+.rotate-btn-primary:active {
+    transform: scale(0.96);
+}
+
+.rotate-btn-secondary {
+    background: transparent;
+    color: #888;
+    border: 1px solid #444;
+    font-family: 'gameFont', monospace, sans-serif;
+    font-size: 11px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.rotate-btn-secondary:hover {
+    color: #fff;
+    border-color: #777;
 }

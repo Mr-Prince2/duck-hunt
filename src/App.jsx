@@ -9,6 +9,8 @@ import HUD from './components/HUD';
 import AudioControl from './components/AudioControl';
 import CRTOverlay from './components/CRTOverlay';
 import ParticleLayer from './components/ParticleLayer';
+import RotatePrompt from './components/RotatePrompt';
+import FullscreenControl from './components/FullscreenControl';
 
 export default function App() {
     const {
@@ -37,6 +39,9 @@ export default function App() {
 
     return (
         <div className={`duck-hunt-app ${screenShake ? 'screen-shake' : ''}`}>
+            {/* Mobile Portrait Orientation Prompt */}
+            <RotatePrompt />
+
             {/* Vintage CRT Scanline & Phosphor Overlay */}
             <CRTOverlay enabled={crtEnabled} />
 
@@ -45,6 +50,7 @@ export default function App() {
 
             {/* Top Bar Controls */}
             <header className="top-controls-bar">
+                <FullscreenControl />
                 <button
                     type="button"
                     className={`retro-crt-btn ${crtEnabled ? 'active' : ''}`}

@@ -6,12 +6,18 @@ export default function DuckSprite({ duck, onShoot }) {
     const imgSrc = isLeft ? '/duck-left.gif' : '/duck-right.gif';
     const isShot = duck.state === 'SHOT';
 
-    const handleClick = (e) => {
+    const handlePointerDown = (e) => {
         e.stopPropagation();
+        if (e.pointerType === 'touch') {
+            e.preventDefault();
+        }
         if (duck.state === 'FLYING') {
             onShoot(duck.id, e.clientX, e.clientY);
         }
     };
+
+    const dWidth = duck.width || DUCK_WIDTH;
+    const dHeight = duck.height || DUCK_HEIGHT;
 
     return (
         <img
@@ -19,13 +25,13 @@ export default function DuckSprite({ duck, onShoot }) {
             alt="Flying Duck"
             className={`duck-sprite ${isShot ? 'shot' : ''}`}
             style={{
-                width: `${DUCK_WIDTH}px`,
-                height: `${DUCK_HEIGHT}px`,
+                width: `${dWidth}px`,
+                height: `${dHeight}px`,
                 left: `${duck.x}px`,
                 top: `${duck.y}px`
             }}
             draggable={false}
-            onClick={handleClick}
+            onPointerDown={handlePointerDown}
         />
     );
 }

@@ -3,13 +3,15 @@ import audioMgr from '../utils/audioManager';
 
 export const DUCK_WIDTH = 96;
 export const DUCK_HEIGHT = 93;
+export const MOBILE_DUCK_WIDTH = 68;
+export const MOBILE_DUCK_HEIGHT = 66;
 export const DUCKS_PER_ROUND = 10;
 export const PASSING_HITS_REQUIRED = 6;
 const FLYAWAY_SPEED = -10;
 const WAVE_DURATION = 7000;
 
 export function useDuckHunt() {
-    const [gameState, setGameState] = useState('START_SCREEN'); // START_SCREEN, WAVE_START, PLAYING, WAVE_CLEAR, DOG_ANIMATION, ROUND_CLEAR, GAME_OVER, PAUSED
+    const [gameState, setGameState] = useState('START_SCREEN'); // START_SCREEN, ROUND_INTRO, WAVE_START, PLAYING, WAVE_CLEAR, DOG_ANIMATION, ROUND_CLEAR, GAME_OVER, PAUSED
     const [score, setScore] = useState(0);
     const [topScore, setTopScore] = useState(() => {
         return parseInt(localStorage.getItem('duckhunt_top_score') || '0', 10);
@@ -71,21 +73,32 @@ export function useDuckHunt() {
     const shakeTimerRef = useRef(null);
     const animFrameRef = useRef(null);
 
-    const [windowSize, setWindowSize] = useState({
-        width: typeof window !== 'undefined' ? window.innerWidth : 1024,
-        height: typeof window !== 'undefined' ? Math.max(300, window.innerHeight - 90) : 600
-    });
+    const getWindowMetrics = () => {
+        if (typeof window === 'undefined') {
+            return { width: 1024, height: 600, isMobileLandscape: false };
+        }
+        const isMobileLandscape = window.innerHeight < 520 || (window.innerWidth < 768 && window.innerWidth > window.innerHeight);
+        const hudHeight = isMobileLandscape ? 58 : 88;
+        return {
+            width: window.innerWidth,
+            height: Math.max(200, window.innerHeight - hudHeight),
+            isMobileLandscape
+        };
+    };
 
-    // Window resize handler
+    const [windowSize, setWindowSize] = useState(getWindowMetrics);
+
+    // Window resize and orientation change handler
     useEffect(() => {
         const handleResize = () => {
-            setWindowSize({
-                width: window.innerWidth,
-                height: Math.max(300, window.innerHeight - 90)
-            });
+            setWindowSize(getWindowMetrics());
         };
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener('orientationchange', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('orientationchange', handleResize);
+        };
     }, []);
 
     // Toggle CRT filter
@@ -267,14 +280,18 @@ export function useDuckHunt() {
         const newDucks = [];
         audioMgr.play('quack');
 
-        const currentW = window.innerWidth;
-        const currentH = Math.max(300, window.innerHeight - 90);
+        const isMobile = windowSize.isMobileLandscape;
+        const dWidth = isMobile ? MOBILE_DUCK_WIDTH : DUCK_WIDTH;
+        const dHeight = isMobile ? MOBILE_DUCK_HEIGHT : DUCK_HEIGHT;
+
+        const currentW = windowSize.width;
+        const currentH = windowSize.height;
 
         for (let i = 0; i < duckCount; i++) {
             const isLeft = Math.random() > 0.5;
-            const startX = Math.floor(Math.random() * Math.max(1, currentW - DUCK_WIDTH));
-            const startY = currentH - DUCK_HEIGHT - 50;
-            const baseSpeed = 5 + roundRef.current * 0.5;
+            const startX = Math.floor(Math.random() * Math.max(1, currentW - dWidth - 20));
+            const startY = Math.max(10, currentH - dHeight - (isMobile ? 25 : 50));
+            const baseSpeed = (isMobile ? 3.8 : 5) + roundRef.current * 0.5;
             const vx = isLeft ? -baseSpeed : baseSpeed;
             const vy = -(baseSpeed * (0.8 + Math.random() * 0.4));
 
@@ -282,6 +299,8 @@ export function useDuckHunt() {
                 id: `${Date.now()}-${i}`,
                 x: startX,
                 y: startY,
+                width: dWidth,
+                height: dHeight,
                 vx,
                 vy,
                 facing: isLeft ? 'left' : 'right',
@@ -341,8 +360,11 @@ export function useDuckHunt() {
         triggerScreenShake();
         audioMgr.play('shot');
 
-        const x = clickX ?? (targetDuck.x + DUCK_WIDTH / 2);
-        const y = clickY ?? (targetDuck.y + DUCK_HEIGHT / 2);
+        const dWidth = targetDuck.width || (windowSize.isMobileLandscape ? MOBILE_DUCK_WIDTH : DUCK_WIDTH);
+        const dHeight = targetDuck.height || (windowSize.isMobileLandscape ? MOBILE_DUCK_HEIGHT : DUCK_HEIGHT);
+
+        const x = clickX ?? (targetDuck.x + dWidth / 2);
+        const y = clickY ?? (targetDuck.y + dHeight / 2);
 
         // Spawn Muzzle Sparks
         spawnSparks(x, y, 10);
@@ -351,7 +373,7 @@ export function useDuckHunt() {
         const scoreId = `${Date.now()}-score`;
         setEffects((prev) => ({
             ...prev,
-            scores: [...prev.scores, { id: scoreId, x: targetDuck.x + 20, y: targetDuck.y, text: '+500' }]
+            scores: [...prev.scores, { id: scoreId, x: targetDuck.x + 10, y: targetDuck.y, text: '+500' }]
         }));
         setTimeout(() => {
             setEffects((prev) => ({
@@ -366,8 +388,8 @@ export function useDuckHunt() {
         for (let i = 0; i < 6; i++) {
             newFeathers.push({
                 id: `${Date.now()}-feather-${i}`,
-                x: targetDuck.x + Math.random() * DUCK_WIDTH,
-                y: targetDuck.y + Math.random() * DUCK_HEIGHT,
+                x: targetDuck.x + Math.random() * dWidth,
+                y: targetDuck.y + Math.random() * dHeight,
                 color: featherColors[i % featherColors.length],
                 driftX: (Math.random() - 0.5) * 80,
                 rot: Math.random() * 360
@@ -506,14 +528,17 @@ export function useDuckHunt() {
                             let newFacing = duck.facing;
                             let newLastQuack = duck.lastQuack;
 
+                            const dWidth = duck.width || (windowSize.isMobileLandscape ? MOBILE_DUCK_WIDTH : DUCK_WIDTH);
+                            const dHeight = duck.height || (windowSize.isMobileLandscape ? MOBILE_DUCK_HEIGHT : DUCK_HEIGHT);
+
                             // Horizontal boundary collision & sprite direction flip
                             if (newX < 0) {
                                 newX = 0;
                                 newVx = Math.abs(duck.vx);
                                 newFacing = 'right';
                                 audioMgr.play('flap');
-                            } else if (newX + DUCK_WIDTH > windowSize.width) {
-                                newX = windowSize.width - DUCK_WIDTH;
+                            } else if (newX + dWidth > windowSize.width) {
+                                newX = windowSize.width - dWidth;
                                 newVx = -Math.abs(duck.vx);
                                 newFacing = 'left';
                                 audioMgr.play('flap');
@@ -523,8 +548,8 @@ export function useDuckHunt() {
                             if (newY < 0) {
                                 newY = 0;
                                 newVy = Math.abs(duck.vy);
-                            } else if (newY + DUCK_HEIGHT > windowSize.height) {
-                                newY = windowSize.height - DUCK_HEIGHT;
+                            } else if (newY + dHeight > windowSize.height) {
+                                newY = windowSize.height - dHeight;
                                 newVy = -Math.abs(duck.vy);
                             }
 

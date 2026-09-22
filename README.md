@@ -59,6 +59,13 @@
 * **Muzzle Flash**: Authentic lightgun white-frame sensor flash on shot registration.
 * **Miss-Click Shockwaves**: Firing into empty terrain triggers expanding ricochet shockwaves.
 
+### 📱 Mobile & Tablet Landscape Optimization
+* **Dedicated Arcade Landscape View**: Automatically detects mobile/tablet devices in portrait mode and displays an arcade orientation prompt to guide users into landscape.
+* **Native Fullscreen Toggle (`⛶ FULL`)**: Fullscreen toggle in the top bar to maximize vertical space and eliminate browser URL bar encroachment.
+* **Zero-Latency Touch & Pointer Events**: Direct `onPointerDown` handling eliminates 300ms mobile touch delay; gestures are prevented with `touch-action: none`.
+* **Adaptive Duck & HUD Scaling**: Responsive hitbox scaling (`70×68px` on mobile landscape vs. `96×93px` on desktop) and compact HUD with notch safe-area insets (`env(safe-area-inset-*)`).
+* **Coarse Finger Hitbox Expansion**: Invisible touch padding ensures responsive tapping on ducks using mobile fingers.
+
 ### 🕹️ Complete NES Game Loop
 * **10 Ducks Per Round**: Progressive waves of 1 or 2 ducks based on round quota.
 * **3 Shells Per Wave**: Shot management matters — running out of ammo or letting the 7-second timer lapse triggers a flyaway.
@@ -81,11 +88,12 @@
 
 | Action | Input Control | Description |
 | :--- | :---: | :--- |
-| **Shoot / Pull Trigger** | `Left Mouse Click` | Discharges lightgun at cursor crosshair position |
+| **Shoot / Pull Trigger** | `Left Click` / `Touch Tap` | Discharges lightgun at cursor or finger tap position |
+| **Fullscreen Mode** | `⛶ FULL` Button | Enters or exits native browser fullscreen view |
 | **Pause / Resume** | `[ESC]` Key | Freezes physics loop and displays pause modal |
 | **Toggle CRT Filter** | `📺 CRT` Button | Toggles scanlines and vignette display pipeline |
 | **Toggle Sound** | `🔊 SOUND` Button | Mutes or unmutes master audio channels |
-| **Start / Restart Game** | `Click` / `Space` / `Enter` | Initializes Round 1 or restarts after Game Over |
+| **Start / Restart Game** | `Tap` / `Click` / `Space` / `Enter` | Initializes Round 1 or restarts after Game Over |
 
 </div>
 
@@ -163,10 +171,12 @@ Duck-Hunt/
 │   │   ├── DogSprite.jsx       # Animated retriever dog component
 │   │   ├── DuckSprite.jsx      # Animated duck component (flight/fall)
 │   │   ├── FlashOverlay.jsx    # White lightgun sensor flash
-│   │   ├── GameBoard.jsx       # Interactive playfield & click handler
+│   │   ├── FullscreenControl.jsx # Native browser fullscreen toggle
+│   │   ├── GameBoard.jsx       # Interactive playfield & pointer handler
 │   │   ├── HUD.jsx             # NES HUD (ammo, hit track, scores)
 │   │   ├── ParticleLayer.jsx   # Sparks, feathers & floating score tags
 │   │   ├── PauseScreen.jsx     # Pause modal overlay
+│   │   ├── RotatePrompt.jsx    # Mobile portrait orientation guide
 │   │   └── StartScreen.jsx     # Retro title screen & controls overview
 │   ├── hooks/
 │   │   └── useDuckHunt.js      # Physics engine & game state machine
