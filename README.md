@@ -1,131 +1,141 @@
-# 🦆 Duck Hunt — Retro Arcade Edition (React)
+<div align="center">
 
-[![React 18](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black&style=flat-square)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white&style=flat-square)](https://vitejs.dev/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?logo=javascript&logoColor=black&style=flat-square)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![CSS3](https://img.shields.io/badge/CSS3-Vanilla%20Animations-1572B6?logo=css3&logoColor=white&style=flat-square)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![Performance](https://img.shields.io/badge/Performance-60%2B%20FPS-00C853?style=flat-square)](#-technical-architecture)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+  <img src="public/duck-right.gif" alt="Duck Hunt Sprite" width="96" height="93" />
 
-An authentic, modern recreation of the legendary 1984 NES classic **Duck Hunt**, re-engineered from the ground up as a high-performance **React** single-page web application powered by **Vite** and hardware-accelerated **Vanilla CSS**.
+  # Duck Hunt: Retro Arcade Edition
 
-Relive the golden age of 8-bit lightgun arcade shooting in any modern browser — supercharged with a comprehensive **Vintage & Modern Retro Animation Suite**, including authentic CRT phosphor scanlines, muzzle blast sparks, lightgun screen recoil, floating 8-bit score indicators, drifting feather physics, and multi-channel sound pooling.
+  **A high-fidelity, 60+ FPS modern browser recreation of Nintendo's iconic 1984 NES classic.**
+
+  [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
+  [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/)
+  [![CSS3](https://img.shields.io/badge/CSS3-Hardware%20Accelerated-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+  [![Frame Rate](https://img.shields.io/badge/FPS-60%2B%20Target-brightgreen?style=flat-square)](#-technical-architecture)
+  [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+
+  <p>
+    <a href="#-key-features">Features</a> •
+    <a href="#-gameplay--controls">Controls</a> •
+    <a href="#-technical-architecture">Architecture</a> •
+    <a href="#-quick-start">Quick Start</a> •
+    <a href="#-configuration--game-tuning">Configuration</a> •
+    <a href="#-deployment">Deployment</a>
+  </p>
+
+</div>
 
 ---
 
-## 📑 Table of Contents
+> [!NOTE]
+> **Duck Hunt: Retro Arcade Edition** brings the authentic 8-bit lightgun arcade experience to modern desktop and mobile browsers. Engineered with React 18, Vite, and hardware-accelerated CSS animations, it pairs vintage authenticity (CRT phosphor scanlines, dog cutscenes, NES HUD) with modern game-feel "juice" (screen recoil, muzzle sparks, floating score indicators, and polyphonic audio).
 
-- [✨ Key Features](#-key-features)
-  - [📺 Vintage Arcade CRT Aesthetics](#-vintage-arcade-crt-aesthetics)
-  - [💥 Modern Retro Tactile "Juice"](#-modern-retro-tactile-juice)
-  - [🕹️ Classic NES Game Mechanics](#️-classic-nes-game-mechanics)
-- [🎮 Controls](#-controls)
-- [🏆 Scoring & Rules](#-scoring--rules)
-- [🏗️ Technical Architecture](#️-technical-architecture)
-  - [Component Breakdown](#component-breakdown)
-  - [60 FPS Game Engine (`useDuckHunt`)](#60-fps-game-engine-useduckhunt)
-  - [Polyphonic Audio Manager](#polyphonic-audio-manager)
-- [📁 Project Structure](#-project-structure)
-- [🚀 Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Development & Production](#development--production)
-- [⚙️ Customization & Game Tuning](#️-customization--game-tuning)
-- [🌐 Deployment](#-deployment)
-- [📜 License & Acknowledgments](#-license--acknowledgments)
+---
+
+## 📸 Feature Comparison: 1984 NES vs. Remaster
+
+| Feature | Original NES (1984) | Retro Arcade Remaster (2026) |
+| :--- | :---: | :---: |
+| **Display Mode** | CRT Monitor Only | Switchable CRT Emulation & Crisp Modern HD |
+| **Feedback / VFX** | Static hit flash | Recoil Screen Shake, Spark Bursts, Feather Physics |
+| **Score Visuals** | Static HUD update | Animated Floating Score Badges (`+500`) |
+| **Audio Engine** | 2A03 APU Sound Chip | Web Audio API with Zero-Latency Polyphonic Pooling |
+| **Resolution** | 256 × 240 (Fixed) | Responsive Dynamic Playfield (Up to 4K Ultra-Wide) |
+| **Save State** | Volatile (Lost on power off) | Persistent Top Scores via `localStorage` |
 
 ---
 
 ## ✨ Key Features
 
-### 📺 Vintage Arcade CRT Aesthetics
-- **Authentic Phosphor Scanlines**: Precision horizontal CRT raster lines with subtle high-voltage flicker.
-- **Vignette & Tube Curvature**: Radial corner darkening simulating retro curved cathode-ray glass monitors.
-- **Instant CRT Toggle**: Seamlessly toggle between vintage arcade monitor mode and ultra-crisp modern HD at any time via the top header button (`📺 CRT: ON / OFF`), persisted in `localStorage`.
+### 📺 Vintage Arcade CRT Emulation
+* **Authentic Phosphor Raster**: Fine horizontal CRT raster scanlines with high-voltage phosphor glow.
+* **Curved Tube Vignette**: Soft radial darkening simulating 80s arcade cathode-ray tube glass curvature.
+* **Instant Toggle**: Switch between nostalgic arcade tube emulation and crystal-clear modern visuals anytime via `📺 CRT: ON / OFF`. Preference is automatically saved in `localStorage`.
 
 ### 💥 Modern Retro Tactile "Juice"
-- **Gun Recoil Screen Shake**: Dynamic kickback vibration on every trigger pull for punchy, tactile feedback.
-- **Muzzle Blast & Sparks**: Radiant particle sparks burst outward from the exact reticle impact point upon firing.
-- **Floating Arcade Score (`+500`)**: Hitting a duck immediately pops up a glowing, rising 8-bit score badge that springs upward before fading out.
-- **Drifting Feather Particles**: Realistic feather sprites scatter, flutter, and drift dynamically when a duck is hit.
-- **Miss Click Shockwaves**: Firing into empty sky or terrain produces an expanding ricochet shockwave ring.
-- **Lightgun Flash Overlay**: Simulates the authentic white screen flash used by the original NES Zapper lightgun sensor.
+* **Lightgun Recoil Screen Shake**: Visceral screen kickback on every trigger pull for punchy tactile feedback.
+* **Muzzle Blast & Sparks**: Radiant particle sparks blast outward from the exact crosshair point of impact.
+* **Floating Arcade Scores (`+500`)**: Hitting a target spawns a dynamic rising 8-bit score counter.
+* **Dynamic Feather Scattering**: Downed ducks release drifting feathers that flutter downward with simulated drag.
+* **Muzzle Flash**: Authentic lightgun white-frame sensor flash on shot registration.
+* **Miss-Click Shockwaves**: Firing into empty terrain triggers expanding ricochet shockwaves.
 
-### 🕹️ Classic NES Game Mechanics
-- **10 Ducks Per Round**: Progressive waves of 1 or 2 ducks based on round quota.
-- **3 Bullets Per Wave**: Every shot counts — missing shots or letting the 7-second timer expire triggers the ducks to fly away!
-- **Dynamic Speed Escalation**: Duck velocities and flight patterns increase with every round.
-- **Passing Requirement**: Bag at least **6 out of 10 ducks** to qualify for the next round.
-- **The Infamous Dog**:
-  - The hound rises from the tall grass to proudly hoist 1 or 2 retrieved ducks with a victory jingle.
-  - Miss all ducks in a wave? The dog pops up and delivers his iconic mocking laugh!
-- **Authentic NES Retro HUD**:
-  - Ammo chamber with active bullet shells and recoil indicators.
-  - 10-indicator hit tracker with blinking active duck slot and vivid neon hit pulses.
-  - Digital score, round counter, and all-time top score tracker.
-- **Persistent High Scores**:
-  - Top scores are automatically stored and retrieved from the browser's `localStorage`.
-- **Keyboard Shortcuts & Pause**:
-  - Press `[ESC]` at any moment during gameplay to pause the hunt.
+### 🕹️ Complete NES Game Loop
+* **10 Ducks Per Round**: Progressive waves of 1 or 2 ducks based on round quota.
+* **3 Shells Per Wave**: Shot management matters — running out of ammo or letting the 7-second timer lapse triggers a flyaway.
+* **Speed Escalation**: Duck flight speed and trajectory complexity increase with each round.
+* **Passing Requirement**: Land at least **6 out of 10 ducks** to qualify for the next round.
+* **The Hound's Reactions**:
+  * Success: The dog rises from the tall grass proudly presenting retrieved ducks accompanied by victory fanfares.
+  * Failure: Miss both ducks and endure the infamous mocking laugh.
+* **Authentic NES HUD**:
+  * Ammo chamber displaying remaining bullet shells with firing animations.
+  * 10-slot hit tracker featuring active blinking target slots and neon hit indicators.
+  * Real-time score, current round counter, and all-time top score display.
+* **Interactive Pause State**: Press `[ESC]` at any point to pause/resume the game loop.
 
 ---
 
-## 🎮 Controls
+## 🎮 Gameplay & Controls
+
+<div align="center">
 
 | Action | Input Control | Description |
-| :--- | :--- | :--- |
-| **Shoot / Pull Trigger** | **Left Mouse Click** | Fires the lightgun at the cursor position |
-| **Pause / Resume Game** | **`[ESC]` Key** | Freezes the game loop and displays pause modal |
-| **Toggle CRT Monitor Mode**| **`📺 CRT` Button** | Toggles vintage scanlines & curved CRT vignette |
-| **Toggle Sound Effects** | **`🔊 SOUND` Button** | Mutes or unmutes all sound effects |
-| **Start / Restart Game** | **Click Start / `Enter` / `Space`** | Begins round 1 or restarts after Game Over |
-
----
-
-## 🏆 Scoring & Rules
-
-| Event | Points Awarded | Condition |
 | :--- | :---: | :--- |
-| **Duck Shot Down** | **+500 pts** | Click registered inside duck hitbox |
-| **Round Advance** | — | Hit **≥ 6 / 10** ducks in the round |
-| **Game Over** | — | Hit **< 6 / 10** ducks at round end |
-| **High Score** | — | Automatically saved to `localStorage` |
+| **Shoot / Pull Trigger** | `Left Mouse Click` | Discharges lightgun at cursor crosshair position |
+| **Pause / Resume** | `[ESC]` Key | Freezes physics loop and displays pause modal |
+| **Toggle CRT Filter** | `📺 CRT` Button | Toggles scanlines and vignette display pipeline |
+| **Toggle Sound** | `🔊 SOUND` Button | Mutes or unmutes master audio channels |
+| **Start / Restart Game** | `Click` / `Space` / `Enter` | Initializes Round 1 or restarts after Game Over |
+
+</div>
+
+### 🏆 Scoring Rules
+* **Target Downed**: `+500 points`
+* **Round Advancement Threshold**: `≥ 6 / 10 hits`
+* **Game Over Condition**: `< 6 / 10 hits`
+* **Top Score**: Automatically written to `localStorage` upon round completion or Game Over.
 
 ---
 
 ## 🏗️ Technical Architecture
 
-### Component Breakdown
+### Component Hierarchy
 
 ```mermaid
 graph TD
     App[App.jsx] --> CRT[CRTOverlay.jsx]
     App --> Flash[FlashOverlay.jsx]
-    App --> Audio[AudioControl.jsx]
+    App --> Controls[AudioControl.jsx]
     App --> Start[StartScreen.jsx]
     App --> Pause[PauseScreen.jsx]
     App --> Banner[BannerOverlay.jsx]
     App --> Board[GameBoard.jsx]
     App --> Particles[ParticleLayer.jsx]
     App --> HUD[HUD.jsx]
-    
+
     Board --> Duck[DuckSprite.jsx]
     Board --> Dog[DogSprite.jsx]
-    
-    App --> Hook[useDuckHunt.js]
-    Hook --> AudioMgr[audioManager.js]
+
+    App --> Hook[useDuckHunt.js Engine Hook]
+    Hook --> AudioMgr[audioManager.js Sound Pool]
 ```
 
-### 60 FPS Game Engine (`useDuckHunt`)
-- **`requestAnimationFrame` Physics Loop**: Computes smooth 60+ FPS duck trajectory updates, boundary collisions, wall bounces, and gravity-assisted falls.
-- **Deterministic State Machine**: Manages transitions between `START_SCREEN`, `WAVE_START`, `PLAYING`, `WAVE_CLEAR`, `DOG_ANIMATION`, `ROUND_CLEAR`, `GAME_OVER`, and `PAUSED`.
-- **Adaptive Window Sizing**: Dynamically recalculates playfield boundaries on window resize events to ensure ducks bounce properly on all display resolutions.
-- **Hardware-Accelerated CSS Particles**: Sparks, floating scores, feathers, and shockwaves utilize CSS transforms and opacity transitions for smooth GPU rendering without degrading game physics.
+### Core Modules
 
-### Polyphonic Audio Manager
-- **Zero-Latency Audio Pooling**: Reusable Web Audio elements preloaded on app boot (`audioManager.js`).
-- **Concurrent Sound Channels**: Clones audio buffers to allow rapid-fire gunshots to overlap without cutting off wing flapping, quacks, or jingles.
-- **Global Mute Sync**: Single reactive source of truth for all game audio events.
+1. **`useDuckHunt.js` (Deterministic Game & Physics Engine)**:
+   - Orchestrates the 60 FPS animation loop via `requestAnimationFrame`.
+   - Manages state transitions: `START_SCREEN` ➔ `WAVE_START` ➔ `PLAYING` ➔ `WAVE_CLEAR` ➔ `DOG_ANIMATION` ➔ `ROUND_CLEAR` ➔ `GAME_OVER` ➔ `PAUSED`.
+   - Performs continuous bounding-box collision detection with real-time viewport boundary reflection.
+   - Controls wave countdown timers and velocity escalation curves ($v = 4 + \text{round} \times 0.75$).
+
+2. **`audioManager.js` (Polyphonic Audio Pool)**:
+   - Pre-caches all sound assets upon initialization to eliminate runtime decode latency.
+   - Spawns independent audio node clones on demand, allowing rapid overlapping gunshots without clipping wing flaps, quacks, or jingles.
+   - Master volume and mute state synchronized across all channels.
+
+3. **`ParticleLayer.jsx` (Hardware-Accelerated VFX)**:
+   - Utilizes CSS transform matrix and opacity transitions (`translate3d`, `will-change`) for 0-repaint visual effects.
+   - Auto-cleans expired particle objects from state to prevent memory leaks during extended play sessions.
 
 ---
 
@@ -133,126 +143,144 @@ graph TD
 
 ```text
 Duck-Hunt/
-├── public/                     # Static game assets
+├── public/                     # Static game assets & audio
 │   ├── dog-duck1.png           # Dog holding 1 retrieved duck
 │   ├── dog-duck2.png           # Dog holding 2 retrieved ducks
-│   ├── dog-score.mp3           # Round clear / victory fanfare
-│   ├── duck-flap.mp3           # Wing flapping sound effect
-│   ├── duck-left.gif           # Left flying duck sprite animation
-│   ├── duck-quack.mp3          # Quack sound effect
-│   ├── duck-right.gif          # Right flying duck sprite animation
-│   ├── duck-shot.mp3           # Authentic gunshot sound effect
-│   ├── duckhunt-bg-4k.png      # 4K remastered NES meadow background
-│   ├── game-font.otf           # 8-bit arcade typography
-│   └── target.png              # Custom crosshair cursor
+│   ├── dog-score.mp3           # Victory fanfare jingle
+│   ├── duck-flap.mp3           # Flapping wings audio clip
+│   ├── duck-left.gif           # Flying duck sprite animation (Left)
+│   ├── duck-right.gif          # Flying duck sprite animation (Right)
+│   ├── duck-quack.mp3          # Duck quack audio clip
+│   ├── duck-shot.mp3           # Lightgun gunshot sound effect
+│   ├── duckhunt-bg-4k.png      # 4K remastered NES meadow backdrop
+│   ├── game-font.otf           # 8-bit arcade typography font
+│   └── target.png              # Custom lightgun crosshair cursor
 ├── src/
-│   ├── components/             # Modular React UI components
-│   │   ├── AudioControl.jsx    # Audio mute toggle button
-│   │   ├── BannerOverlay.jsx   # Chromatic aberration glitch text banner
-│   │   ├── CRTOverlay.jsx      # Phosphor scanlines, vignette & CRT toggle
-│   │   ├── DogSprite.jsx       # Dog grass rise & duck retrieve animation
-│   │   ├── DuckSprite.jsx      # Flying, shot, and falling duck sprite
-│   │   ├── FlashOverlay.jsx    # Lightgun CRT white flash simulation
-│   │   ├── GameBoard.jsx       # Interactive playfield & impact detector
-│   │   ├── HUD.jsx             # Shell-ejecting ammo, hit tracker & score
-│   │   ├── ParticleLayer.jsx   # Sparks, shockwaves, floating score & feathers
+│   ├── components/             # Reusable UI & game components
+│   │   ├── AudioControl.jsx    # Sound mute toggle header button
+│   │   ├── BannerOverlay.jsx   # Chromatic aberration round banner
+│   │   ├── CRTOverlay.jsx      # Scanlines, vignette & CRT toggle
+│   │   ├── DogSprite.jsx       # Animated retriever dog component
+│   │   ├── DuckSprite.jsx      # Animated duck component (flight/fall)
+│   │   ├── FlashOverlay.jsx    # White lightgun sensor flash
+│   │   ├── GameBoard.jsx       # Interactive playfield & click handler
+│   │   ├── HUD.jsx             # NES HUD (ammo, hit track, scores)
+│   │   ├── ParticleLayer.jsx   # Sparks, feathers & floating score tags
 │   │   ├── PauseScreen.jsx     # Pause modal overlay
-│   │   └── StartScreen.jsx     # Arcade title & high score overlay
+│   │   └── StartScreen.jsx     # Retro title screen & controls overview
 │   ├── hooks/
-│   │   └── useDuckHunt.js      # 60 FPS physics engine, recoil & effect state
+│   │   └── useDuckHunt.js      # Physics engine & game state machine
 │   ├── utils/
-│   │   └── audioManager.js     # Multi-channel sound preloading & playback
-│   ├── App.jsx                 # Main application coordinator
-│   ├── main.jsx                # React DOM entrypoint
-│   └── index.css               # Arcade styling, CRT FX & animations
-├── index.html                  # HTML entry template
-├── package.json                # Project dependencies and scripts
-├── vite.config.js              # Vite React configuration
-└── README.md                   # Project documentation
+│   │   └── audioManager.js     # Sound pool & preloader manager
+│   ├── App.jsx                 # Application layout coordinator
+│   ├── main.jsx                # React DOM root entrypoint
+│   └── index.css               # Arcade styling, CRT FX & keyframe anims
+├── index.html                  # HTML entrypoint
+├── package.json                # Project dependencies and npm scripts
+├── vite.config.js              # Vite build configuration
+└── README.md                   # Repository documentation
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (version 18.x or 20.x+ recommended)
-- `npm`, `pnpm`, or `yarn`
+* [Node.js](https://nodejs.org/) (version `18.x` or `20.x+` recommended)
+* `npm`, `pnpm`, or `yarn`
 
 ### Installation
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Mr-Prince2/duck-hunt.git
-   cd duck-hunt
-   ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/Mr-Prince2/duck-hunt.git
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+# 2. Navigate to project root
+cd duck-hunt
 
-### Development & Production
+# 3. Install dependencies
+npm install
+```
 
-- **Start local development server**:
-  ```bash
-  npm run dev
-  ```
-  Open your browser and navigate to `http://localhost:3000` (or the URL shown in your terminal).
+### Running Locally
 
-- **Build optimized production bundle**:
-  ```bash
-  npm run build
-  ```
-  Generates production-ready static assets in the `dist/` folder.
+```bash
+# Start the Vite development server with Hot Module Replacement (HMR)
+npm run dev
+```
 
-- **Preview the production build locally**:
-  ```bash
-  npm run preview
-  ```
+Visit `http://localhost:3000` (or the address printed in your terminal) in your browser.
+
+### Production Build
+
+```bash
+# Compile and minify for production
+npm run build
+
+# Preview the production build locally
+npm run preview
+```
 
 ---
 
-## ⚙️ Customization & Game Tuning
+## ⚙️ Configuration & Game Tuning
 
-All primary gameplay balance variables are cleanly exposed in [`src/hooks/useDuckHunt.js`](src/hooks/useDuckHunt.js):
+All primary game constants are defined cleanly in [`src/hooks/useDuckHunt.js`](src/hooks/useDuckHunt.js) for effortless game balancing:
 
 ```javascript
-// Gameplay constants in src/hooks/useDuckHunt.js
-export const DUCK_WIDTH = 96;           // Duck hitbox width (px)
-export const DUCK_HEIGHT = 93;          // Duck hitbox height (px)
-export const DUCKS_PER_ROUND = 10;      // Number of ducks per round
-export const PASSING_HITS_REQUIRED = 6; // Ducks required to advance
-const FLYAWAY_SPEED = -10;              // Upward speed when duck escapes
-const WAVE_DURATION = 7000;             // Time limit per wave (ms)
+// Game Balance Constants (src/hooks/useDuckHunt.js)
+export const DUCK_WIDTH = 96;           // Target hitbox width in pixels
+export const DUCK_HEIGHT = 93;          // Target hitbox height in pixels
+export const DUCKS_PER_ROUND = 10;      // Total ducks per round
+export const PASSING_HITS_REQUIRED = 6; // Minimum hits to advance round
+const FLYAWAY_SPEED = -10;              // Escape ascent speed (px/frame)
+const WAVE_DURATION = 7000;             // Time limit per wave in ms (7 seconds)
 ```
 
-To modify duck flight velocity scaling, locate `spawnDucks` inside `useDuckHunt.js`:
+To modify duck velocity progression:
 ```javascript
-const baseSpeed = 4 + round * 0.75; // Adjust speed increase per round
+// Base speed formula inside spawnDucks()
+const baseSpeed = 4 + round * 0.75;
 ```
 
 ---
 
 ## 🌐 Deployment
 
-The project builds to standard static HTML, CSS, and JS files, making it deployable anywhere:
+This application produces a completely self-contained static build within the `dist/` directory, compatible with any static hosting provider.
 
-### Deploy to GitHub Pages
-1. In `vite.config.js`, set `base: '/duck-hunt/'` (matching your repo name).
-2. Run `npm run build`.
-3. Push the contents of `dist/` to your `gh-pages` branch.
-
-### Deploy to Vercel / Netlify
+### Vercel / Netlify
 1. Connect your GitHub repository to [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
 2. Set the build command to `npm run build`.
 3. Set the output directory to `dist`.
 4. Deploy!
 
+### GitHub Pages
+1. Open [`vite.config.js`](vite.config.js) and add the repository base URL:
+   ```javascript
+   export default defineConfig({
+     base: '/duck-hunt/',
+     plugins: [react()]
+   });
+   ```
+2. Build the project: `npm run build`
+3. Deploy the `dist` directory to your repository's `gh-pages` branch.
+
 ---
 
-## 📜 License & Acknowledgments
+## 🤝 Contributing
 
-- This project is released under the **MIT License**.
-- Built with ❤️ as an homage to the legendary 1984 Nintendo classic *Duck Hunt*.
-- Original sound effects and artwork concepts are property of Nintendo.
+Contributions, issues, and feature requests are welcome!
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📜 License & Legal Attribution
+
+* **Software License**: Distributed under the [MIT License](LICENSE).
+* **Attribution**: *Duck Hunt* was originally created and published by **Nintendo** in 1984. All original sprite concepts, sound effects, and game motifs are tributes to the original work. This project was developed independently for educational and archival purposes.
